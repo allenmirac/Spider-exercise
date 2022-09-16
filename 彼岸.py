@@ -1,3 +1,4 @@
+//etree的使用，xpath解析的使用
 from unicodedata import name
 import requests
 from lxml import etree
