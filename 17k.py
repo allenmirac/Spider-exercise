@@ -1,3 +1,4 @@
+//利用session对话自动存储Cookies的特性
 import requests
 
 session = requests.Session()
