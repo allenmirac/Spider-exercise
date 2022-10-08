@@ -9,7 +9,7 @@ header = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'
 }
 
-def get_price(url, i):
+def get_price(url, pege_info):
     resp = requests.get(url, header)
     page_text = resp.text
     resp_json = json.loads(page_text)
@@ -22,15 +22,19 @@ def get_price(url, i):
     for i in price_list:
         name = i['prodName']
         price = i['avgPrice']
-        detail = name+price
         with open('Spider/output/Price.csv', 'a+', encoding='gbk', newline='') as fp:
-            fp = csv.writer(fp)
-            fp.writerow(name+price)
-    print(f'第{i}页爬取成功...........')
+            fieldnames = ['菜名', '价格']
+            fp = csv.DictWriter(fp, fieldnames)
+            # fp.writeheader()
+            fp.writerow({'菜名':name, '价格':price})
+    print(f'第{pege_info}页爬取成功...........')
 if __name__ == '__main__':
     lock = Lock()
+    with open('Spider/output/Price.csv', 'a+', encoding='gbk', newline='') as fp:
+        fieldnames = ['菜名', '价格']
+        fp = csv.DictWriter(fp, fieldnames)
+        fp.writeheader()
     with ThreadPoolExecutor(50) as t:
-        for i in range(1, 30):
-		  #t.submit(get_price,url = f'http://xinfadi.com.cn/getPriceData.html?current={i}',page_info = i)
-            url = f'http://xinfadi.com.cn/getPriceData.html?current={i}'
+        for i in range(1, 21):
+            url=f'http://xinfadi.com.cn/getPriceData.html?current={i}'
             get_price(url, i)
