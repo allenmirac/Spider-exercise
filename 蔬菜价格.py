@@ -4,7 +4,7 @@ import requests
 from lxml import etree
 from threading import Lock, Thread	#加入锁
 import json
-from concurrent.futures import ThreadPoolExecutor	#用了但是不知道为什么没有用，线程池：https://juejin.cn/post/6844903861245706253
+from concurrent.futures import ThreadPoolExecutor	# 线程池：https://juejin.cn/post/6844903861245706253
 header = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36'
 }
@@ -37,4 +37,5 @@ if __name__ == '__main__':
     with ThreadPoolExecutor(50) as t:
         for i in range(1, 21):
             url=f'http://xinfadi.com.cn/getPriceData.html?current={i}'
-            get_price(url, i)
+            # get_price(url, i)
+            t.submit(get_price, url, i)
